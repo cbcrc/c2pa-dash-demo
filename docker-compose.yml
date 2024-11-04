@@ -1,0 +1,9 @@
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx-c2pa-dash-demo
+    volumes:
+      - ./html:/usr/share/nginx/html
+    ports:
+      - "81:80"

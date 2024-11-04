@@ -1,0 +1,56 @@
+{
+  "alg": "es256",
+  "sign_cert": "!!! REPLACE BY YOUR OWN PUBLIC KEY !!!",
+  "ta_url": "http://timestamp.digicert.com",
+  "claim_generator": "TestApp",
+  "claim_generator_info": [
+    {
+      "name": "CBC/Radio-Canada",
+      "version": "0.1.0",
+      "icon": {
+        "format": "image/png",
+        "identifier": "logo.png"
+      }
+    }
+  ],
+  "assertions": [
+    {
+      "label": "stds.schema-org.CreativeWork",
+      "data": {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "author": [
+          {
+            "@type": "Person",
+            "name": "Sébastien Testrop"
+          }
+        ]
+      }
+    },
+    {
+      "label": "c2pa.actions",
+      "data": {
+        "actions": [
+          {
+            "action": "c2pa.opened"
+          }
+        ],
+        "metadata": {
+          "reviewRatings": [
+            {
+              "code": "c2pa.unknown",
+              "explanation": "Something untracked happened",
+              "value": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "CBC.custom.assertions",
+      "data": {
+        "any_tag": "some random assertions"
+      }
+    }
+  ]
+}

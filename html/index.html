@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>C2PA Validation with external dash.js plugin</title>
+
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    <script src="https://vjs.zencdn.net/8.3.0/video.js"></script>
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />    
+
+    <!-- Bootstrap core CSS -->
+    <link href="./lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="./lib/main.css" rel="stylesheet" />
+
+    <!-- video-js -->
+    <script src="https://vjs.zencdn.net/8.3.0/video.js"></script>
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
+
+    <!-- c2pa player -->
+     <link href="https://cdn.jsdelivr.net/gh/contentauth/dash.js@82ddaa3/samples/c2pa/c2pa-player.css" rel="stylesheet">
+
+    <!-- jakarta font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      body {
+      background-color: #36454F; /* Couleur charbon */
+      color: white; /* Optionnel : couleur du texte pour contraste */
+    }
+      video {
+        width: 640px;
+        height: 360px;
+      }
+    </style>
+
+    <script type="module" class="code">
+
+      /* Import c2pa plugin */
+      import {c2pa_init} from './c2pa/plugin-dash/c2pa-dash-plugin.js';
+      import {C2PAPlayer} from './c2pa/C2paPlayer/main.js'
+  
+      /* c2pa player instance */
+      var c2paPlayer;
+      function init() {
+        var video,
+          dashPlayer,
+          url = 'http://localhost:81/c2pa_dash_demo/output.mpd';
+
+        video = document.querySelector('#videoPlayer');
+        /* Create dashjs player */
+        /* Responsible for streaming video */
+        dashPlayer = dashjs.MediaPlayer().create();
+        var options = {fluid: true , controlBar: { children: ['playToggle' , 'progressControl', "currentTimeDisplay", 'volumePanel','pictureInPictureToggle','fullscreenToggle']}}
+
+        /* Create videojs player and c2pa player */
+        /* Responsible for UI and playback control */
+        var videoJsPlayer = videojs('videoPlayer', options)
+        c2paPlayer = new C2PAPlayer(videoJsPlayer, video);
+        c2paPlayer.initialize();
+
+
+        /* Create c2pa plugin*/
+        /* Responsible for executing c2pa validation */
+        c2pa_init(dashPlayer, function (e) {
+          /* Update c2pa player with current c2pa status update */
+          c2paPlayer.playbackUpdate(e.c2pa_status);
+        }).then(() => {
+          dashPlayer.initialize(video, url, true);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        init();
+      });
+    </script>
+
+  </head>
+  <body>
+    <main>
+      <div class="container py-4">
+        <header class="pb-3 mb-4 border-bottom">
+          <img class="" src="https://cbc.radio-canada.ca/images/rgb_cbc-radio-canada_logo.svg?v=0.0.0.1" width="200" />
+        </header>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="h-100 p-5 border rounded-3">
+              <h3>Extending dash.js w/ C2PA Video Verification</h3>
+              <p>
+                This sample shows how to extend dash.js with C2PA SDKs to verify
+                video segments, and associated UI to show validation status and
+                C2PA information
+              </p>
+              <p>
+              source: 
+                <code>
+                  https://dashif.org/events/special-sessions/ <br />
+                  June 7, 2024: DASH-IF Special Session: Content Authenticity and Provenance in DASH
+                </code>
+                </p>
+                <p>
+                    <code>
+                      https://github.com/cbcrc/c2pa-dash-demo
+                    </code>
+                    </p>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <video id="videoPlayer" class="video-js" controls="true"></video>
+          </div>
+        </div>
+        <footer class="pt-3 mt-4 text-muted border-top"></footer>
+      </div>
+    </main>
+
+  </body>
+</html>
