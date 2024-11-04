@@ -1,11 +1,11 @@
 # CBC/Radio-Canada C2PA Dash Demo
 
 ## requirements
-docker
-python3
-pyinstaller
-c2patool
-aws key configuration
+* docker
+* python3
+* pyinstaller
+* c2patool
+* aws key configuration
 
 ## Run
 ```sh
